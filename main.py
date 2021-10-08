@@ -1,6 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import copy
 
 # define the sigmoid function
 def sigmoid(x, derivative=False):
@@ -24,7 +25,7 @@ def relu(x, derivative=False):
 np.random.seed(1)
 
 # learning rate
-alpha = .005
+alpha = .003
 
 # number of nodes in the hidden layer
 num_hidden = 20
@@ -32,6 +33,7 @@ num_hidden = 20
 # Construct Train and Test sest of the Sinus function
 X = np.linspace(-np.pi, np.pi, num=5000)
 X_test = np.linspace(-np.pi / 2, np.pi/2, num=5000)
+xt = copy.deepcopy(X_test)
 X = np.expand_dims(X, axis=1)
 X_test = np.expand_dims(X_test, axis=1)
 
@@ -46,7 +48,7 @@ hidden_weights = 2 * np.random.random((X.shape[1] + 1, num_hidden)) - 1
 output_weights = 2 * np.random.random((num_hidden + 1, y.shape[1])) - 1
 
 # number of iterations of gradient descent
-num_epochs = 10000
+num_epochs = 5000
 loss_per_epoch = []
 loss_test = []
 
@@ -106,8 +108,8 @@ plt.ylabel('Loss')
 plt.savefig('losses.png')
 
 plt.figure()
-plt.plot(np.arange(len(y_test)), y_test, label = 'Real sinus')
-plt.plot(np.arange(len(sinus_test)), sinus_test, label = 'Estimated')
+plt.plot(xt, y_test, label = 'Real sinus')
+plt.plot(xt, sinus_test, label = 'Estimated')
 plt.grid(True)
 plt.legend()
 plt.title('Estimation of Sinus')
