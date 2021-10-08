@@ -24,7 +24,7 @@ def relu(x, derivative=False):
 np.random.seed(1)
 
 # learning rate
-alpha = .01
+alpha = .005
 
 # number of nodes in the hidden layer
 num_hidden = 20
@@ -46,7 +46,7 @@ hidden_weights = 2 * np.random.random((X.shape[1] + 1, num_hidden)) - 1
 output_weights = 2 * np.random.random((num_hidden + 1, y.shape[1])) - 1
 
 # number of iterations of gradient descent
-num_epochs = 1000
+num_epochs = 10000
 loss_per_epoch = []
 loss_test = []
 
@@ -111,7 +111,7 @@ plt.plot(np.arange(len(sinus_test)), sinus_test, label = 'Estimated')
 plt.grid(True)
 plt.legend()
 plt.title('Estimation of Sinus')
-plt.xlabel('Epochs')
+plt.xlabel('x')
 plt.ylabel('f(x)')
 plt.savefig('estimations.png')
 plt.show()
