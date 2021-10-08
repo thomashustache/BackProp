@@ -24,14 +24,14 @@ def relu(x, derivative=False):
 np.random.seed(1)
 
 # learning rate
-alpha = .05
+alpha = .01
 
 # number of nodes in the hidden layer
-num_hidden = 10
+num_hidden = 20
 
 # Construct Train and Test sest of the Sinus function
-X = np.linspace(-np.pi, np.pi, num=10000)
-X_test = np.linspace(-np.pi / 2, np.pi/2, num=10000)
+X = np.linspace(-np.pi, np.pi, num=5000)
+X_test = np.linspace(-np.pi / 2, np.pi/2, num=5000)
 X = np.expand_dims(X, axis=1)
 X_test = np.expand_dims(X_test, axis=1)
 
@@ -46,7 +46,7 @@ hidden_weights = 2 * np.random.random((X.shape[1] + 1, num_hidden)) - 1
 output_weights = 2 * np.random.random((num_hidden + 1, y.shape[1])) - 1
 
 # number of iterations of gradient descent
-num_epochs = 10000
+num_epochs = 1000
 loss_per_epoch = []
 loss_test = []
 
@@ -65,7 +65,7 @@ for i in range(num_epochs):
     mse = abs(output_layer_outputs - y) ** 2
     loss_per_epoch += [np.mean(mse)]
     output_error = output_layer_outputs - y
-    if i % 500 == 0:
+    if i % 100 == 0:
         print('MSE: ', np.mean(mse))
 
     
@@ -90,7 +90,8 @@ for i in range(num_epochs):
     hidden_layer_outputs = np.hstack((np.ones((X_test.shape[0], 1)), relu(np.dot(input_layer_outputs, hidden_weights))))
     output_layer_outputs = np.dot(hidden_layer_outputs, output_weights)
     
-    mse_test = abs(output_layer_outputs - y) ** 2
+    sinus_test = output_layer_outputs
+    mse_test = abs(output_layer_outputs - y_test) ** 2
     loss_test += [np.mean(mse_test)]
 
 
@@ -99,4 +100,18 @@ plt.plot(np.arange(len(loss_per_epoch)), loss_per_epoch, label = 'train')
 plt.plot(np.arange(len(loss_test)), loss_test, label = 'test')
 plt.grid(True)
 plt.legend()
+plt.title('Train and test MSE')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.savefig('losses.png')
+
+plt.figure()
+plt.plot(np.arange(len(y_test)), y_test, label = 'Real sinus')
+plt.plot(np.arange(len(sinus_test)), sinus_test, label = 'Estimated')
+plt.grid(True)
+plt.legend()
+plt.title('Estimation of Sinus')
+plt.xlabel('Epochs')
+plt.ylabel('f(x)')
+plt.savefig('estimations.png')
 plt.show()
