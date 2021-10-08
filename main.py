@@ -57,20 +57,20 @@ for i in range(num_epochs):
 
     # forward phase
     # np.hstack((np.ones(...), X) adds a fixed input of 1 for the bias weight
-    
     input_layer_outputs = np.hstack((np.ones((X.shape[0], 1)), X))
     hidden_layer_outputs = np.hstack((np.ones((X.shape[0], 1)), relu(np.dot(input_layer_outputs, hidden_weights))))
     output_layer_outputs = np.dot(hidden_layer_outputs, output_weights)
     
-    # backward phase
-    # output layer error term
+    
     mse = abs(output_layer_outputs - y) ** 2
     loss_per_epoch += [np.mean(mse)]
-    output_error = output_layer_outputs - y
-    if i % 100 == 0:
-        print('MSE: ', np.mean(mse))
 
-    
+    if i % 100 == 0:
+        print('MSE: {:.5f}'.format(np.mean(mse)))
+
+    # backward phase
+    # output layer error term
+    output_error = output_layer_outputs - y
     # hidden layer error term
     # [:, 1:] removes the bias term from the backpropagation
     hidden_error = relu(x=hidden_layer_outputs[:, 1:], derivative=True) * np.dot(output_error, output_weights.T[:, 1:])
